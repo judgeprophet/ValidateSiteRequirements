@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- BrowserDetect by QuircksMode -->
+    <script type="text/javascript" src="browser.js"></script>
+    <script type="text/javascript" src="jquery-1.4.1.min.js"></script>    
+    <script type="text/javascript" src="application.js"></script>
+
+<style>
+
+.check-statement-passed
+{
+	background-color:rgba(0,255,0,0.125);
+}
+
+.check-statement-failed
+{
+	/* Add color background and transparancy */
+	background-color:rgba(255,0,0,0.125);
+}
+
+.check-statement
+{
+	font-size:22pt;
+	font-family: Helvatica;
+	border: 1px solid black;
+	
+    /*background-color: #EFEFEF;*/
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
+    line-height: 45px;
+    margin : 0px 30px 30px 30px;
+    padding: 30px;
+}
+
+.bullet-failed-condition, .bullet-passed-condition
+{
+	list-style-type : none;
+}
+
+.bullet-failed-condition li:before,  .bullet-passed-condition li:before {
+}
+
+
+.bullet-failed-condition li:before {
+    color: red; /* or whatever color you prefer */
+	content:'\2022'; /* round */
+	font-size:40pt;
+    vertical-align : middle;
+}
+.bullet-passed-condition li:before {
+	font-size:22pt;
+	content:'\25A0'; /* square */
+    color: green; /* or whatever color you prefer */
+}
+
+.passed-condition
+{
+	color : green;
+}
+
+.failed-condition
+{
+	color : red;	
+}
+
+.hide
+{
+	/* Permet de cacher meme si javascript est désactivé */
+	display : none;
+}
+
+
+.javascipt-enable-check
+{	
+}
+
+.browser-detect
+{
+
+}
+
+.popup-blocker-check
+{
+}
+
+.ie-compatibilityMode-enable-check
+{
+}
+
+</style>
+</head>
+<body>
+<form>
+<div id="container" class="clearfix">
+	<!--Based On : <A HREF="http://detectmybrowser.com/">detectmybrowser.com</A> -->
+     
+      <div id="javascipt-enable-check" class="check-statement check-statement-failed javascipt-enable-check">
+       <ul id="bullet-javascipt-enable-detect" class="bullet-failed-condition"><li>Javascript is <span id="data-javascipt-enable-detect" class="data-javascipt-enable-detect failed-condition">Disables</span>.</li></ul>
+     </div>
+
+     <div id="popup-blocker-check" class="check-statement check-statement-failed popup-blocker-check hide">
+       <ul id="bullet-popup-blocker-detect" class="bullet-failed-condition"><li>Popup are <span id="data-popup-blocker-detect" class="failed-condition">Blocked</span>.</li></ul>
+     </div>
+
+     <div id="browser-detect" class="check-statement check-statement-failed browser-detect hide">
+       <ul id="bullet-browser-detect" class="bullet-failed-condition"><li id="data-browser">You're using <span data-browser-detect="browser" class="data-browser-detect">browser</span> version <span data-browser-detect="version" class="data-browser-detect">1</span>
+       on <span data-browser-detect="OS" class="data-browser-detect">Operating System</span></li></ul>
+     </div>
+
+      <div id="ie-compatibilityMode-enable-check" class="check-statement check-statement-failed ie-compatibilityMode-enable-check hide">
+       <ul id="bullet-ie-compatibilityMode-enable-detect" class="bullet-failed-condition"><li>IE Compatibility Mode is <span id="data-ie-compatibilityMode-enable-detect" class="failed-condition">Enabled</span>.</li></ul>
+     </div>
+
+</div>
+</form>
+</body>
+</html>
