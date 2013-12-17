@@ -2,74 +2,82 @@
 //http://detectmybrowser.com/
 //J'ai converti l'utilisation de la librairie "Prototype.js" pour "jQuery"
 
+//======================================================================================
+//
+// Pour faire la vérification la fonction ValidateIsSiteRequirement() doit etre appelée.
+//
+//======================================================================================
+//TODO Ajouté des propriétés pour définir QUEL Validation on 
+//veut effectué (voir doValidatePopupAllowed)
+
+
 if (top != self) { top.location = location; }
 
 (function() {
 
-  var MyBrowser;
+    var MyBrowser;
+    var doValidatePopupAllowed = false;
+    var doDisplayPassedTests = false;
 
-  /*
-   *
-   * MyBrowser 
-   *
-   */
-  MyBrowser = (function() {
+    //======================================================================================
+    //   * Définition de l'objet 
+    //           MyBrowser 
+    //======================================================================================
+    MyBrowser = (function() {
 
-    function MyBrowser(params) {
+        function MyBrowser(params) {
 
-    };
+        };
 
-    // stuff todo when dom loaded
-    MyBrowser.prototype.initDomLoaded = function() {
-      if (this.isJavascriptEnable())
-      {
-        $('#javascipt-enable-check').toggleClass("check-statement-failed check-statement-passed");
-        $('#data-javascipt-enable-detect').text("Enable").toggleClass("failed-condition passed-condition");
-        $('#bullet-javascipt-enable-detect').toggleClass("bullet-failed-condition bullet-passed-condition");
+        // stuff todo when dom loaded
+        MyBrowser.prototype.initDomLoaded = function() {
 
+            if (this.isJavascriptEnable())
+            {
+                ToggleDisplayError('javascript', 'Enable'); //On affiche les résultats des tests
 
-        $("#browser-detect").show();
-        $("#popup-blocker-check").show();
+                this.initBrowserDetection(); // Determine le fureteur utilise
 
-      this.initBrowserDetection();
+                if(doValidatePopupAllowed && this.isPopupAllowed())
+                {
+                    ToggleDisplayError('popup-blocker', 'Enable'); //On affiche les résultats des tests
+                }
+
+                if(this.ieUserAgent.isIE()) //Est-ce un fureteur IE
+                {
+                    //Si IE on vérifie la version
+                    if(this.ieUserAgent.version >= 8)
+                    {
+                        ToggleDisplayError('browser-detect', ''); //On affiche les résultats des tests
+                    }
+                }
+                else
+                {
+                    //Les autre fureteur Pas IE on passe
+                    ToggleDisplayError('browser-detect', ''); //On affiche les résultats des tests
+                }
+
+                //Si c'est IE on verifie si le mode compatible est ON
+                if (!this.ieUserAgent.isCompatibilityModeEnable)
+                {
+                    ToggleDisplayError('ie-compatibilityMode', 'Enable'); //On affiche les résultats des tests
+                }
+
+                //this.initFeatureDetection();
+
+                //Doit-on afficher les résultats des tests "Reussi"
+                if (!doDisplayPassedTests) {
+                    $(".check-statement-passed").each(function(index) {
+                        $(this).hide();
+                    });
+                }
       
-      if(this.isPopupAllowed())
-      {
-        $('#popup-blocker-check').toggleClass("check-statement-failed check-statement-passed");
-        $('#data-popup-blocker-detect').text("Allowed").toggleClass("failed-condition passed-condition");
-        $('#bullet-popup-blocker-detect').toggleClass("bullet-failed-condition bullet-passed-condition");
-      }
-
-      if(this.ieUserAgent.isIE())
-      {
-        //Si IE on vérifie la version
-        if(this.ieUserAgent.version < 8)
-        {
-            //$('#bullet-browser-detect').toggleClass("bullet-failed-condition bullet-passed-condition");
-        }
-        else
-        {
-          $('#browser-detect').toggleClass("check-statement-failed check-statement-passed");
-          $('#bullet-browser-detect').toggleClass("bullet-failed-condition bullet-passed-condition");
-          $("#ie-compatibilityMode-enable-check").show();
-          if (!this.ieUserAgent.isCompatibilityModeEnable)
-          {
-            $('#ie-compatibilityMode-enable-check').toggleClass("check-statement-failed check-statement-passed");
-            $('#data-ie-compatibilityMode-enable-detect').text("Disabled").toggleClass("failed-condition passed-condition");
-            $('#bullet-ie-compatibilityMode-enable-detect').toggleClass("bullet-failed-condition bullet-passed-condition");
-          }
-        }
-      }
-      else
-      {
-        //Les autre fureteur Pas IE on passe
-          $('#browser-detect').toggleClass("check-statement-failed check-statement-passed");
-          $('#bullet-browser-detect').toggleClass("bullet-failed-condition bullet-passed-condition");        
-      }
-
-      //this.initFeatureDetection();
-      }
-    };
+                //On affiche les problemes
+                $(".check-statement-failed").each(function (index) {
+                    $(this).show();
+                });
+            }
+        };
 
     // stuff todo when window is loaded (after images)
      MyBrowser.prototype.initWindowLoaded = function() {
@@ -302,15 +310,39 @@ if (top != self) { top.location = location; }
 
 var my_browser = createMyBrowser();
 
- $(document).ready(function() {
-        $("#browser-detect").hide();
-        $("#popup-blocker-check").hide();
-        $("#ie-compatibilityMode-enable-check").hide();
+//======================================================================================
+//
+// Pour faire la vérification la fonction ValidateIsSiteRequirement() doit etre appelée.
+//
+//======================================================================================
+function ValidateIsSiteRequirement() 
+{
+    $("#browser-detect").hide();
+    $("#popup-blocker-check").hide();
+    $("#ie-compatibilityMode-enable-check").hide();
+    my_browser.initDomLoaded();
+    my_browser.initWindowLoaded();
 
-   my_browser.initDomLoaded();
-   my_browser.initWindowLoaded();
-  });
+    //Si des conditions du fureteur ne sont pas présente on retourn false
+    var isBrowserValid = true;
+    $(".check-statement-failed").each(function (index) {
+        isBrowserValid = false;
+    });
 
+    return isBrowserValid;
+}
+
+
+//Affiche les errors en mode Failed ou Passed
+function ToggleDisplayError(pstrErrorName, pstrDataTxt) {
+    //On affiche seulement les tests en erreur
+    $('#' + pstrErrorName + '-enable-check').toggleClass("check-statement-failed check-statement-passed");
+    $('#data-' + pstrErrorName + '-enable-detect').text(pstrDataTxt).toggleClass("failed-condition passed-condition");
+    $('#bullet-' + pstrErrorName + '-enable-detect').toggleClass("bullet-failed-condition bullet-passed-condition");
+}
+
+
+//Converti de Prototype.js à jQuery.js
 // //prototype.js // Listens for the given event over the entire document http://api.prototypejs.org/dom/document/observe/
 // document.observe('dom:loaded', function() {
 //   my_browser.initDomLoaded();
