@@ -20,6 +20,9 @@ if (top != self) { top.location = location; }
 (function() {
     var MyBrowser;
 
+    var labelDisabled = (typeof lblDisable != 'undefined')? lblDisable : 'Disabled';
+    var labelEnabled = (typeof lblEnable != 'undefined')? lblEnable : 'Enabled';
+
     //Verif selon les variables systèmes
     var doValidateJavascript =  (typeof javaScriptEnabled != 'undefined' && javaScriptEnabled)? true : false;
     var doValidatePopupAllowed = (typeof popUpBlockerDisabled != 'undefined' && popUpBlockerDisabled)? true : false;
@@ -47,19 +50,19 @@ if (top != self) { top.location = location; }
             var isBrowserValid = (!doValidateJavascript)? true : false;// si onne valide pas le JS on ne valide donc rien.  donc tout est ok
             if (doValidateJavascript && this.isJavascriptEnable())
             {
-                ToggleDisplayFailedPassed('javascript', lblEnable); //On affiche les résultats des tests
+                ToggleDisplayFailedPassed('javascript', labelEnabled); //On affiche les résultats des tests
 
                 this.initBrowserDetection(); // Determine le fureteur utilise
 
                 var isCookiesAllowed = this.isCookiesAllowed();
 
                 if (doValidateCookiesAllowed && isCookiesAllowed) {
-                    ToggleDisplayFailedPassed('cookies', lblEnable); //On affiche les résultats des tests
+                    ToggleDisplayFailedPassed('cookies', labelEnabled); //On affiche les résultats des tests
                 }
 
                 if(doValidatePopupAllowed && this.isPopupAllowed(isCookiesAllowed))
                 {
-                    ToggleDisplayFailedPassed('popup-blocker', lblEnable); //On affiche les résultats des tests
+                    ToggleDisplayFailedPassed('popup-blocker', labelEnabled); //On affiche les résultats des tests
                 }
 
                 if(this.ieUserAgent.isIE()) //Est-ce un fureteur IE
@@ -83,7 +86,7 @@ if (top != self) { top.location = location; }
                 //Si c'est IE on verifie si le mode compatible est ON
                 if (!this.ieUserAgent.isCompatibilityModeEnable)
                 {
-                    ToggleDisplayFailedPassed('ie-compatibilityMode', lblEnable); //On affiche les résultats des tests
+                    ToggleDisplayFailedPassed('ie-compatibilityMode', labelEnabled); //On affiche les résultats des tests
                 }
 
                 //Disabled popup-blocker test by removing the Check CSS Class
