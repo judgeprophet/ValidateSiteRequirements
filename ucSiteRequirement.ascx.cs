@@ -15,12 +15,11 @@ namespace Unitas.Web.WebControls.Common
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-
             StringBuilder str = new StringBuilder();
 
             //On crée les variables JAVASCRIPT qui vont servir a faire les tests d'accessibilité
             // au fureteur
-            foreach (var opt in GetListOption("CompatibilityComponents"))
+            foreach (var opt in GetListOption("CompatibilityComponentsDynForm"))
             {
                 string[] ele = opt.Code.Split('~');
                 if (ele[0].ToUpper().IndexOf("BROWSER") != -1 && ele.Count() > 1)
@@ -35,7 +34,9 @@ namespace Unitas.Web.WebControls.Common
                 }
             }
             Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "browserCheck", str.ToString(), true);
-
+            // on insere / "Include" les scripts ici pour s'assurer qu'il sont inséré une seul fois meme si le control est présent plusieurs fois 
+            Page.ClientScript.RegisterClientScriptInclude(typeof(Page), "application.js", ResolveUrl("~") + "UserControls/Share/Script/application.js");
+            Page.ClientScript.RegisterClientScriptInclude(typeof(Page), "browser.js", ResolveUrl("~") + "UserControls/Share/Script/browser.js");
         }
 
     }

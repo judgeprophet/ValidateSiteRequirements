@@ -1,10 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ucSiteRequirement.ascx.cs" Inherits="Unitas.Web.WebControls.Common.ucSiteRequirement" %>
-
-
-<script src="<%= ResolveUrl("~") %>/UserControls/Share/Script/application.js" type="text/javascript"></script>
-<script src="<%= ResolveUrl("~") %>/UserControls/Share/Script/browser.js" type="text/javascript"></script>
-
 <style>
+/* TODO attention car un UserControl peut etre placer plus d'une fois dans une page*/    
+/* TODO ce qui aurait pour effet de répéter ce CSS plusieurs fois */
     .failed-condition
     {
 	    color : red;	
@@ -40,8 +37,12 @@
        <ul id="bullet-popup-blocker-enable-detect" class="bullet-failed-condition"><li>[[ucSiteRequirement.ascx:lblPopupsAre]]  <span id="data-popup-blocker-enable-detect" class="failed-condition">[[ucSiteRequirement.ascx:Disabled]]</span>.</li></ul>
      </div>
 
+     <div id="browser-supported-check" class="check-statement check-statement-failed browser-supported-check hide">
+       <ul id="bullet-browser-supported-detect" class="bullet-failed-condition"><li>[[ucSiteRequirement.ascx:lblBrowserNotSupported]]</li></ul>
+     </div>
+
      <div id="browser-detect-enable-check" class="check-statement check-statement-failed browser-detect-enable-check hide">
-       <ul id="bullet-browser-detect-enable-check" class="bullet-failed-condition"><li id="data-browser">[[ucSiteRequirement.ascx:lblBrowserIs]]</li></ul>
+       <ul id="bullet-browser-detect-enable-detect" class="bullet-failed-condition"><li id="data-browser">[[ucSiteRequirement.ascx:lblBrowserIs]]</li></ul>
      </div>
 
       <div id="ie-compatibilityMode-enable-check" class="check-statement check-statement-failed ie-compatibilityMode-enable-check hide">
